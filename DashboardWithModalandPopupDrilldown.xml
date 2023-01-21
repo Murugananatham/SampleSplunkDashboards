@@ -1,0 +1,139 @@
+<dashboard version="1.1" theme="light">
+  <label>Sample Line Chart</label>
+  <row>
+    <panel>
+      <html>
+        <a href="#" id="btn1" class="btnModalInfo" data-toggle="modal" data-target="#desc1">
+          <span class="icon-large icon-info-circle" aria-hidden="true"/>
+          <b>Click for dashboard information</b>
+        </a>
+        <div class="modal fade" id="desc1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              
+              
+              <div class="modal-header" style="padding-top: 2px; padding-bottom: 2px">
+                <row>
+                  <div>
+                    <h2 class="modal-title text-center" id="myModalLabel"> Modal Heading goes here </h2>
+                  </div>
+                </row>
+              </div>
+              
+              
+              <div class="modal-body" style="overflow:auto">
+                <h1>
+                  <b>Description</b>
+                </h1>
+                This dashboard will show data related all applicable status count using "timechart" command <hr/>
+                <h1>
+                  <b>Meta Info</b>
+                </h1>
+                <h2>Application Name</h2>
+                Search and Reporting <br/>
+                <h2>Usage</h2>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula odio,
+                malesuada ut consectetur lobortis, imperdiet ac metus. Vestibulum sagittis
+                vestibulum dolor, quis volutpat mi semper et.<br/>
+              </div>
+              
+              
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| tstats count where index=* by sourcetype</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <set token="sourcetype_token">$click.value$</set>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats count where index=* by sourcetype</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <drilldown>
+          <set token="sourcetype_token">$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats count where index=* by sourcetype</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <drilldown>
+          <set token="sourcetype_token">$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats count where index=* by sourcetype</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <drilldown>
+          <set token="sourcetype_token">$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row depends="$sourcetype_token$" id="popup_drilldown">
+    <panel>
+      <title>Sourcetype Details</title>
+      <html>
+        <style>
+           #popup_drilldown{
+            position: fixed;
+            top: 15%;
+            width: 98%;
+            border: 1px solid white;
+          }
+          
+          .fadeClass{
+            opacity: 0.2;
+            pointer-events: none;
+          }
+        </style>
+      </html>
+      <table>
+        <search>
+          <query>index=* sourcetype="$sourcetype_token$"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <unset token="sourcetype_token"></unset>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</dashboard>
